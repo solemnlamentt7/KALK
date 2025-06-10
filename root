@@ -1,0 +1,173 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enhanced Smart Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #111827;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .calculator {
+      background: #1f2937;
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      width: 360px;
+      max-width: 90vw;
+    }
+
+    .display {
+      width: 100%;
+      height: 60px;
+      border-radius: 12px;
+      background: #374151;
+      color: #f3f4f6;
+      font-size: 26px;
+      text-align: right;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    button {
+      padding: 18px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      background: #4b5563;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #6b7280;
+    }
+
+    .equal {
+      background: #10b981;
+    }
+
+    .equal:hover {
+      background: #059669;
+    }
+
+    .clear {
+      background: #ef4444;
+    }
+
+    .clear:hover {
+      background: #dc2626;
+    }
+
+    .special {
+      background: #2563eb;
+    }
+
+    .special:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" class="display" id="display" readonly placeholder="0" />
+    <div class="buttons">
+      <button class="special" onclick="insertFunction('Math.PI')">π</button>
+      <button class="special" onclick="insertFunction('Math.E')">e</button>
+      <button class="special" onclick="insertFunction('Math.sqrt(')">√</button>
+      <button class="special" onclick="insertFunction('**')">^</button>
+      <button class="clear" onclick="clearDisplay()">C</button>
+
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button onclick="append('/')">÷</button>
+      <button class="special" onclick="backspace()">⌫</button>
+
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button onclick="append('*')">×</button>
+      <button class="special" onclick="insertFunction('Math.log10(')">log</button>
+
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button onclick="append('-')">−</button>
+      <button class="special" onclick="insertFunction('Math.sin(')">sin</button>
+
+      <button onclick="append('0')">0</button>
+      <button onclick="append('.')">.</button>
+      <button onclick="calculate()" class="equal">=</button>
+      <button onclick="append('+')">+</button>
+      <button class="special" onclick="insertFunction('Math.cos(')">cos</button>
+
+      <button class="special" onclick="insertFunction('Math.tan(')">tan</button>
+      <button class="special" onclick="append('(')">(</button>
+      <button class="special" onclick="append(')')">)</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function append(char) {
+      display.value += char;
+    }
+
+    function insertFunction(func) {
+      display.value += func;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function backspace() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    function calculate() {
+      try {
+        const result = Function('"use strict"; return (' + display.value + ')')();
+        display.value = result;
+      } catch {
+        display.value = "Error";
+      }
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+      const key = e.key;
+      if ("0123456789+-*/().".includes(key)) {
+        append(key);
+      } else if (key === "Enter") {
+        calculate();
+      } else if (key === "Backspace") {
+        backspace();
+      } else if (key === "Escape") {
+        clearDisplay();
+      }
+    });
+  </script>
+</body>
+</html>
