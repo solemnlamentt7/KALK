@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Enhanced Smart Calculator</title>
+  <title>Super Smart Calculator</title>
   <style>
     * {
       box-sizing: border-box;
@@ -10,7 +10,7 @@
     }
 
     body {
-      background: #111827;
+      background: linear-gradient(145deg, #1e1e2f, #111120);
       margin: 0;
       padding: 0;
       display: flex;
@@ -20,21 +20,22 @@
     }
 
     .calculator {
-      background: #1f2937;
-      padding: 24px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 20px;
       border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      width: 360px;
-      max-width: 90vw;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 400px;
     }
 
     .display {
       width: 100%;
-      height: 60px;
+      height: 70px;
       border-radius: 12px;
-      background: #374151;
-      color: #f3f4f6;
-      font-size: 26px;
+      background: #0f172a;
+      color: #f8fafc;
+      font-size: 28px;
       text-align: right;
       padding: 10px;
       margin-bottom: 20px;
@@ -44,30 +45,32 @@
     .buttons {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
 
     button {
       padding: 18px;
       font-size: 18px;
       border: none;
-      border-radius: 12px;
-      background: #4b5563;
-      color: white;
+      border-radius: 14px;
+      background: #1e293b;
+      color: #ffffff;
       cursor: pointer;
-      transition: background 0.2s;
+      font-weight: bold;
+      transition: 0.2s ease;
     }
 
     button:hover {
-      background: #6b7280;
+      background: #334155;
     }
 
     .equal {
-      background: #10b981;
+      background: #22c55e;
+      color: white;
     }
 
     .equal:hover {
-      background: #059669;
+      background: #16a34a;
     }
 
     .clear {
@@ -78,68 +81,81 @@
       background: #dc2626;
     }
 
-    .special {
+    .fn {
+      background: #3b82f6;
+    }
+
+    .fn:hover {
       background: #2563eb;
     }
 
-    .special:hover {
-      background: #1d4ed8;
+    @media (max-width: 480px) {
+      .calculator {
+        padding: 15px;
+      }
+
+      button {
+        padding: 14px;
+        font-size: 16px;
+      }
+
+      .display {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="calculator">
-    <input type="text" class="display" id="display" readonly placeholder="0" />
+    <input type="text" id="display" class="display" placeholder="0" readonly />
     <div class="buttons">
-      <button class="special" onclick="insertFunction('Math.PI')">π</button>
-      <button class="special" onclick="insertFunction('Math.E')">e</button>
-      <button class="special" onclick="insertFunction('Math.sqrt(')">√</button>
-      <button class="special" onclick="insertFunction('**')">^</button>
+      <button class="fn" onclick="insert('Math.PI')">π</button>
+      <button class="fn" onclick="insert('Math.E')">e</button>
+      <button class="fn" onclick="insert('Math.pow(')">^</button>
+      <button class="fn" onclick="insert('Math.sqrt(')">√</button>
       <button class="clear" onclick="clearDisplay()">C</button>
 
-      <button onclick="append('7')">7</button>
-      <button onclick="append('8')">8</button>
-      <button onclick="append('9')">9</button>
-      <button onclick="append('/')">÷</button>
-      <button class="special" onclick="backspace()">⌫</button>
+      <button onclick="insert('7')">7</button>
+      <button onclick="insert('8')">8</button>
+      <button onclick="insert('9')">9</button>
+      <button onclick="insert('/')">÷</button>
+      <button onclick="backspace()">⌫</button>
 
-      <button onclick="append('4')">4</button>
-      <button onclick="append('5')">5</button>
-      <button onclick="append('6')">6</button>
-      <button onclick="append('*')">×</button>
-      <button class="special" onclick="insertFunction('Math.log10(')">log</button>
+      <button onclick="insert('4')">4</button>
+      <button onclick="insert('5')">5</button>
+      <button onclick="insert('6')">6</button>
+      <button onclick="insert('*')">×</button>
+      <button class="fn" onclick="insert('Math.log10(')">log</button>
 
-      <button onclick="append('1')">1</button>
-      <button onclick="append('2')">2</button>
-      <button onclick="append('3')">3</button>
-      <button onclick="append('-')">−</button>
-      <button class="special" onclick="insertFunction('Math.sin(')">sin</button>
+      <button onclick="insert('1')">1</button>
+      <button onclick="insert('2')">2</button>
+      <button onclick="insert('3')">3</button>
+      <button onclick="insert('-')">−</button>
+      <button class="fn" onclick="insert('Math.sin(')">sin</button>
 
-      <button onclick="append('0')">0</button>
-      <button onclick="append('.')">.</button>
-      <button onclick="calculate()" class="equal">=</button>
-      <button onclick="append('+')">+</button>
-      <button class="special" onclick="insertFunction('Math.cos(')">cos</button>
+      <button onclick="insert('0')">0</button>
+      <button onclick="insert('.')">.</button>
+      <button class="equal" onclick="calculate()">=</button>
+      <button onclick="insert('+')">+</button>
+      <button class="fn" onclick="insert('Math.cos(')">cos</button>
 
-      <button class="special" onclick="insertFunction('Math.tan(')">tan</button>
-      <button class="special" onclick="append('(')">(</button>
-      <button class="special" onclick="append(')')">)</button>
+      <button class="fn" onclick="insert('Math.tan(')">tan</button>
+      <button onclick="insert('(')">(</button>
+      <button onclick="insert(')')">)</button>
+      <button class="fn" onclick="insert('Math.log(')">ln</button>
+      <button class="fn" onclick="insert('Math.abs(')">abs</button>
     </div>
   </div>
 
   <script>
-    const display = document.getElementById('display');
+    const display = document.getElementById("display");
 
-    function append(char) {
-      display.value += char;
-    }
-
-    function insertFunction(func) {
-      display.value += func;
+    function insert(value) {
+      display.value += value;
     }
 
     function clearDisplay() {
-      display.value = '';
+      display.value = "";
     }
 
     function backspace() {
@@ -148,23 +164,24 @@
 
     function calculate() {
       try {
-        const result = Function('"use strict"; return (' + display.value + ')')();
+        let result = Function('"use strict"; return (' + display.value + ')')();
         display.value = result;
-      } catch {
+      } catch (e) {
         display.value = "Error";
       }
     }
 
     // Keyboard support
-    document.addEventListener('keydown', (e) => {
-      const key = e.key;
-      if ("0123456789+-*/().".includes(key)) {
-        append(key);
-      } else if (key === "Enter") {
+    document.addEventListener("keydown", function (e) {
+      const allowedKeys = "0123456789+-*/().";
+      if (allowedKeys.includes(e.key)) {
+        insert(e.key);
+      } else if (e.key === "Enter") {
+        e.preventDefault();
         calculate();
-      } else if (key === "Backspace") {
+      } else if (e.key === "Backspace") {
         backspace();
-      } else if (key === "Escape") {
+      } else if (e.key === "Escape") {
         clearDisplay();
       }
     });
